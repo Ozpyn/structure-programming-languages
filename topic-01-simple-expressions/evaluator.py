@@ -24,6 +24,16 @@ def evaluate(ast, environment):
     if ast["tag"] == "negate":
         value, _ = evaluate(ast["value"], environment)
         return -value, False
+    if ast["tag"] == "mod":
+        left_value, _ = evaluate(ast["left"], environment)
+        right_value, _ = evaluate(ast["right"], environment)
+        while left_value >= right_value:
+            left_value -= right_value
+        return left_value, False
+        # return left_value % right_value, False
+    if ast["tag"] == "not":
+        value, _ = evaluate(ast["value"], environment)
+        return 1 if not value else 0, False
     raise Exception(f"Unknown token in AST: {ast['tag']}")
 
 def equals(code, environment, expected_result, expected_environment=None):
@@ -79,6 +89,22 @@ def test_evaluate_unary_negation():
     equals("12/--3", {}, 4)
     equals("(3+4)--(1+2)", {}, 10)
 
+
+def test_evaluate_modulus():
+    print("test evaluate modulus")
+    equals("13%2", {}, 1)
+    equals("25%3", {}, 1)
+    equals("23%6", {}, 5)
+    equals("20%5", {}, 0)
+
+
+def test_evaluate_not_negation():
+    print("test evaluate not negation")
+    equals("!0", {}, 1)
+    equals("!1", {}, 0)
+    equals("!12", {}, 0)
+
+
 def test_evaluate_complex_expression():
     print("test evaluate complex expression")
     equals("(3+4)-(1+2)", {}, 4)
@@ -94,5 +120,7 @@ if __name__ == "__main__":
     test_evaluate_multiplication()
     test_evaluate_division()
     test_evaluate_unary_negation()
+    test_evaluate_modulus()
+    test_evaluate_not_negation()
     test_evaluate_complex_expression()
     print("done")

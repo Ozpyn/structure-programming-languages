@@ -17,7 +17,6 @@ patterns = [
     ["\-", "-"],
     ["(\d*\.\d+)|(\d+\.\d*)|(\d+)", "number"],
     ["\%", "mod"],
-    ["\^", "exp"],
     ["\!", "not"],
 ]
 
@@ -77,13 +76,11 @@ def test_simple_tokens():
         {"tag": ")", "value": ")", "position": 5},
         {"tag": "end", "value": "", "position": 6},
     ]
-    tokens = tokenize("%^!")
-    print(tokens)
+    tokens = tokenize("%!")
     assert tokens == [
         {"tag": "mod", "value": "%", "position": 0},
-        {"tag": "exp", "value": "^", "position": 1},
-        {"tag": "not", "value": "!", "position": 2},
-        {"tag": "end", "value": "", "position": 3},
+        {"tag": "not", "value": "!", "position": 1},
+        {"tag": "end", "value": "", "position": 2},
     ]
     tokens = tokenize("123")
     assert tokens == [
