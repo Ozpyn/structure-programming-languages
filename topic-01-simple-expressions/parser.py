@@ -28,9 +28,9 @@ def parse_simple_expression(tokens):
         node, tokens = parse_expression(tokens[1:])
         assert tokens[0]["tag"] == ")", "Error: expected ')'"
         return node, tokens[1:]
-    if tokens[0]["tag"]== "-":
+    if tokens[0]["tag"] == "-":
         new_node, tokens = parse_simple_expression(tokens[1:])
-        node = {"tag": "negate", "value" : new_node}
+        node = {"tag": "negate", "value": new_node}
         return node, tokens
     if tokens[0]["tag"] == "not":
         new_node, tokens = parse_simple_expression(tokens[1:])
